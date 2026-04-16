@@ -1,5 +1,6 @@
 /**
  * Fills SOUL.md and AGENTS.md templates from BMAD persona data + user config.
+ * BMAD Master (bmad-master) uses dedicated master templates — routing brain, not specialist.
  * Asserts no unfilled {placeholder} tokens remain in output.
  */
 
@@ -27,15 +28,38 @@ export interface GeneratedIdentity {
   agents: string;
 }
 
+const MASTER_AGENT_NAME = "bmad-master";
+
 export function generateIdentity(input: GenerateInput): GeneratedIdentity {
-  const soul = generateSoul(input);
-  const agents = generateAgents(input);
+  const isMaster = input.persona.name === MASTER_AGENT_NAME;
+
+  const soul = isMaster ? generateMasterSoul(input) : generateSoul(input);
+  const agents = isMaster ? generateMasterAgents(input) : generateAgents(input);
 
   assertNoPlaceholders("SOUL.md", soul);
   assertNoPlaceholders("AGENTS.md", agents);
 
   return { soul, agents };
 }
+
+// ─── Master (orchestrator) templates ─────────────────────────────────────────
+
+function generateMasterSoul(input: GenerateInput): string {
+  const tmpl = readFileSync(join(TMPL_DIR, "SOUL.md.master.tmpl"), "utf-8");
+  return fill(tmpl, {
+    userName: input.userName,
+    language: input.language,
+  });
+}
+
+function generateMasterAgents(input: GenerateInput): string {
+  const tmpl = readFileSync(join(TMPL_DIR, "AGENTS.md.master.tmpl"), "utf-8");
+  return fill(tmpl, {
+    language: input.language,
+  });
+}
+
+// ─── Specialist templates ─────────────────────────────────────────────────────
 
 function generateSoul(input: GenerateInput): string {
   const tmpl = readFileSync(join(TMPL_DIR, "SOUL.md.tmpl"), "utf-8");
@@ -84,14 +108,14 @@ function generateAgents(input: GenerateInput): string {
   });
 }
 
+// ─── Utilities ────────────────────────────────────────────────────────────────
+
 /**
  * Escape literal curly braces in a persona field value before template substitution.
  * Prevents persona content like "{Team}" from being mistaken for an unfilled placeholder.
  * Uses Unicode lookalike chars (U+FF5B/U+FF5D) — invisible to LLMs, safe in markdown.
  */
 function escapeFieldValue(val: string): string {
-  // Replace { and } that are NOT part of a template var (i.e. not {key} we're inserting)
-  // We escape all { and } in the value since template vars are in the template, not in values.
   return val.replace(/\{/g, "\uFF5B").replace(/\}/g, "\uFF5D");
 }
 
