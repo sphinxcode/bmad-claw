@@ -1,9 +1,13 @@
 /**
  * Orchestrates BMAD install detection.
- * Uses bmad-paths resolution chain: config → cwd → home.
+ * Uses candidate discovery from bmad-paths for explainable resolution.
  */
 
-import { resolveBmadPath, type BmadDetection } from "../lib/bmad-paths.js";
+import {
+  discoverBmadCandidates,
+  selectActiveBmadCandidate,
+  type BmadCandidate,
+} from "../lib/bmad-paths.js";
 import {
   readAgentManifest,
   readWorkflowCatalog,
@@ -18,7 +22,10 @@ export type BmadMode = "full" | "persona-only";
 
 export interface BmadContext {
   mode: BmadMode;
-  detection: BmadDetection | null;
+  /** Active BMAD candidate (null in persona-only mode). */
+  detection: BmadCandidate | null;
+  /** All discovered candidates including invalid ones (for status display). */
+  candidates: BmadCandidate[];
   agents: BmadPersona[];
   workflows: BmadWorkflowEntry[];
   versions: BmadManifestVersions;
@@ -27,25 +34,30 @@ export interface BmadContext {
 
 /**
  * Detect BMAD install and load all relevant data.
- * Falls back to snapshot if no BMAD found.
+ * Falls back to snapshot if no BMAD found or manifest unreadable.
  */
 export function detectBmad(opts: {
+  sharedBmadHome?: string | null;
+  /** @deprecated pass sharedBmadHome */
   bmadHome?: string | null;
   cwd?: string;
 }): BmadContext {
-  const detection = resolveBmadPath(opts);
+  const shared = opts.sharedBmadHome ?? opts.bmadHome;
+  const candidates = discoverBmadCandidates({ sharedBmadHome: shared, cwd: opts.cwd });
+  const active = selectActiveBmadCandidate(candidates);
 
-  if (detection) {
-    const agents = readAgentManifest(detection.path);
-    const workflows = readWorkflowCatalog(detection.path);
-    const versions = readModuleVersions(detection.path);
+  if (active) {
+    const agents = readAgentManifest(active.path);
+    const workflows = readWorkflowCatalog(active.path);
+    const versions = readModuleVersions(active.path);
 
-    // If manifest-reader degraded to empty (schema mismatch), fall back
+    // If manifest-reader degraded to empty (schema mismatch), fall back for persona data
     if (agents.length === 0) {
       const fb = loadFallbackCatalog();
       return {
-        mode: "full", // BMAD IS installed, just use fallback for persona data
-        detection,
+        mode: "full",
+        detection: active,
+        candidates,
         agents: fb.agents,
         workflows: fb.workflows,
         versions,
@@ -53,7 +65,7 @@ export function detectBmad(opts: {
       };
     }
 
-    return { mode: "full", detection, agents, workflows, versions };
+    return { mode: "full", detection: active, candidates, agents, workflows, versions };
   }
 
   // No BMAD — persona-only mode
@@ -62,6 +74,7 @@ export function detectBmad(opts: {
     return {
       mode: "persona-only",
       detection: null,
+      candidates,
       agents: fb.agents,
       workflows: fb.workflows,
       versions: {},
@@ -72,6 +85,7 @@ export function detectBmad(opts: {
     return {
       mode: "persona-only",
       detection: null,
+      candidates,
       agents: [],
       workflows: [],
       versions: {},

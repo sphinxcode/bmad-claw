@@ -33,8 +33,8 @@ export function registerBmadWorkflowTool(api: OpenClawPluginApi): void {
       } as never,
       async execute(_id, params: { trigger: string; context?: string }) {
         const pluginConf = readPluginConfig();
-        const bmadHome = (pluginConf["bmadHome"] as string | null) ?? null;
-        const ctx = detectBmad({ bmadHome, cwd: process.cwd() });
+        const sharedBmadHome = pluginConf.sharedBmadHome ?? null;
+        const ctx = detectBmad({ sharedBmadHome, cwd: process.cwd() });
 
         if (ctx.mode !== "full" || !ctx.detection) {
           return {

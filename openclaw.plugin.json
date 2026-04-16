@@ -1,14 +1,25 @@
 {
   "id": "bmad-claw",
   "name": "BMAD Claw",
-  "description": "Unofficial BMAD bridge for OpenClaw. Scaffolds BMAD personas (Mary, John, Barry, etc.) as global OpenClaw agents with freestyle identity, session hooks, and workflow tools. Optionally installs BMAD from scratch.",
+  "description": "Unofficial BMAD bridge for OpenClaw. Scaffolds BMAD personas (Mary, John, Barry, etc.) as global OpenClaw agents with freestyle identity, session hooks, and workflow tools.",
   "configSchema": {
     "type": "object",
     "additionalProperties": false,
     "properties": {
       "bmadHome": {
         "type": ["string", "null"],
-        "description": "Absolute path to _bmad directory. Set automatically by bmad install or bmad config set-home."
+        "description": "Deprecated. Legacy field — migrated to sharedBmadHome on first read."
+      },
+      "sharedBmadHome": {
+        "type": ["string", "null"],
+        "description": "Absolute path to shared BMAD _bmad dir (e.g. ~/.openclaw/_bmad). Used across all projects.",
+        "default": null
+      },
+      "installMode": {
+        "type": ["string", "null"],
+        "enum": ["shared", "project-local", null],
+        "description": "How BMAD was last installed: shared (one location for all projects) or project-local (./_bmad).",
+        "default": null
       },
       "boundAgents": {
         "type": "array",

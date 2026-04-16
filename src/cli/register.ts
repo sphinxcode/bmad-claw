@@ -36,7 +36,7 @@ export function registerBmadCli(program: Commander): void {
 
   bmad
     .command("install-bmad")
-    .description("Install BMAD via npx bmad-method@latest (--yes, minimal prompts)")
+    .description("Install BMAD via npx bmad-method@latest — choose shared (~/.openclaw) or project-local (./_bmad)")
     .argument("[directory]", "Target directory (default: cwd)")
     .action(async (dir?: string) => {
       await installBmadCommand(dir ? [dir] : []);
@@ -51,7 +51,7 @@ export function registerBmadCli(program: Commander): void {
 
   bmad
     .command("status")
-    .description("Show BMAD detection, bound agents, and mode")
+    .description("Show BMAD resolution chain, active source, bound agents, and mode")
     .action(async () => {
       await statusCommand();
     });

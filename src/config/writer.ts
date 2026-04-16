@@ -10,6 +10,7 @@
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { openclawHome, agentWorkspaceDir, agentDir } from "../lib/bmad-paths.js";
+import { migrateConfig } from "./schema.js";
 
 export interface AgentEntry {
   id: string;
@@ -170,9 +171,11 @@ export function agentExists(agentId: string): boolean {
   return (config.agents?.list ?? []).some((a) => a.id === safeId);
 }
 
-/** Write plugin config values (bmadHome, boundAgents, defaultMode) */
+/** Write plugin config values */
 export function writePluginConfig(updates: Partial<{
-  bmadHome: string | null;
+  bmadHome: string | null;         // @deprecated — writes sharedBmadHome
+  sharedBmadHome: string | null;
+  installMode: "shared" | "project-local" | null;
   boundAgents: string[];
   defaultMode: "full" | "persona-only";
 }>): void {
@@ -186,11 +189,17 @@ export function writePluginConfig(updates: Partial<{
 
   const pluginConfig = config.plugins.entries["bmad-claw"]!.config ?? {};
 
+  // bmadHome is deprecated — write as sharedBmadHome for forward compat
   if ("bmadHome" in updates) {
-    pluginConfig["bmadHome"] = updates.bmadHome != null
-      ? normalizePath(updates.bmadHome)
-      : null;
+    const v = updates.bmadHome != null ? normalizePath(updates.bmadHome) : null;
+    pluginConfig["bmadHome"] = v;
+    pluginConfig["sharedBmadHome"] = v;
   }
+  if ("sharedBmadHome" in updates) {
+    const v = updates.sharedBmadHome != null ? normalizePath(updates.sharedBmadHome) : null;
+    pluginConfig["sharedBmadHome"] = v;
+  }
+  if ("installMode" in updates) pluginConfig["installMode"] = updates.installMode;
   if ("boundAgents" in updates) pluginConfig["boundAgents"] = updates.boundAgents;
   if ("defaultMode" in updates) pluginConfig["defaultMode"] = updates.defaultMode;
 
@@ -218,20 +227,21 @@ export function addBoundAgent(agentId: string): void {
   }
 }
 
-/** Read current plugin config from openclaw.json */
-export function readPluginConfig(): Record<string, unknown> {
+/** Read current plugin config from openclaw.json — auto-migrates legacy bmadHome. */
+export function readPluginConfig(): ReturnType<typeof migrateConfig> {
   try {
     const config = readConfig();
-    return (config.plugins?.entries?.["bmad-claw"]?.config ?? {}) as Record<string, unknown>;
+    const raw = (config.plugins?.entries?.["bmad-claw"]?.config ?? {}) as Record<string, unknown>;
+    return migrateConfig(raw);
   } catch {
-    return {};
+    return migrateConfig({});
   }
 }
 
-/** Validate that the stored bmadHome path is still live. Returns null if stale or missing. */
+/** Validate that the stored shared BMAD home is still live. Returns null if stale or missing. */
 export function validateStoredBmadHome(): string | null {
   const conf = readPluginConfig();
-  const stored = conf["bmadHome"] as string | null | undefined;
+  const stored = conf.sharedBmadHome;
   if (!stored) return null;
   return existsSync(join(stored, "_config", "manifest.yaml")) ? stored : null;
 }

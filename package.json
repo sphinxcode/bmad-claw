@@ -8,7 +8,7 @@
   "keywords": ["bmad", "openclaw", "bridge", "agents", "bmad-method"],
   "repository": {
     "type": "git",
-    "url": "https://github.com/sphinx-codes/bmad-claw"
+    "url": "https://github.com/sphinxcode/bmad-claw"
   },
   "openclaw": {
     "extensions": ["./index.ts"],

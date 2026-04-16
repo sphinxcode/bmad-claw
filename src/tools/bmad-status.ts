@@ -16,14 +16,14 @@ export function registerBmadStatusTool(api: OpenClawPluginApi): void {
     parameters: { type: "object", properties: {}, additionalProperties: false } as never,
     async execute(_id, _params) {
       const pluginConf = readPluginConfig();
-      const bmadHome = (pluginConf["bmadHome"] as string | null) ?? null;
-      const boundAgents = (pluginConf["boundAgents"] as string[] | undefined) ?? [];
+      const sharedBmadHome = pluginConf.sharedBmadHome ?? null;
+      const boundAgents = pluginConf.boundAgents ?? [];
 
-      const ctx = detectBmad({ bmadHome, cwd: process.cwd() });
+      const ctx = detectBmad({ sharedBmadHome, cwd: process.cwd() });
 
       const result = {
         mode: ctx.mode,
-        bmadHome: ctx.detection?.path ?? null,
+        bmadPath: ctx.detection?.path ?? null,
         detectionSource: ctx.detection?.source ?? null,
         modules: ctx.versions,
         workflowsAvailable: ctx.mode === "full",

@@ -1,36 +1,77 @@
 /**
  * openclaw bmad status
- * Prints diagnostic table: BMAD home, modules, bound agents, mode.
+ * Prints diagnostic table: BMAD resolution chain, modules, bound agents, mode.
  */
 
 import { detectBmad } from "../discovery/bmad-detect.js";
 import { readPluginConfig } from "../config/writer.js";
 import { readdirSync, existsSync } from "node:fs";
 import { join } from "node:path";
-import { openclawHome } from "../lib/bmad-paths.js";
+import { openclawHome, defaultSharedBmadHome } from "../lib/bmad-paths.js";
+import type { BmadCandidate } from "../lib/bmad-paths.js";
+
+const SOURCE_LABEL: Record<BmadCandidate["source"], string> = {
+  "project":        "project-local (./_bmad)",
+  "shared-config":  "shared (configured)",
+  "shared-default": "shared (default ~/.openclaw/_bmad)",
+};
 
 export async function statusCommand(): Promise<void> {
   const pluginConf = readPluginConfig();
-  const bmadHome = (pluginConf["bmadHome"] as string | null) ?? null;
-  const boundAgents = (pluginConf["boundAgents"] as string[] | undefined) ?? [];
+  const sharedBmadHome = pluginConf.sharedBmadHome ?? null;
+  const installMode = pluginConf.installMode ?? null;
+  const boundAgents = pluginConf.boundAgents ?? [];
 
-  const ctx = detectBmad({ bmadHome, cwd: process.cwd() });
+  const ctx = detectBmad({ sharedBmadHome, cwd: process.cwd() });
 
   console.log("\n─── BMAD Claw Status ─────────────────────────────────────\n");
 
   // Mode
   const modeLabel = ctx.mode === "full" ? "✓ full (workflows available)" : "⚠ persona-only";
-  console.log(`Mode:        ${modeLabel}`);
+  console.log(`Mode:          ${modeLabel}`);
+  if (installMode) {
+    console.log(`Install mode:  ${installMode}`);
+  }
 
-  // BMAD install
+  // ── Resolution chain ──────────────────────────────────────
+  console.log(`\nBMAD resolution chain:`);
+  for (const c of ctx.candidates) {
+    const active = ctx.detection?.path === c.path;
+    const marker = active ? "→ ACTIVE  " : c.valid ? "  shadowed" : "  missing ";
+    const label = SOURCE_LABEL[c.source] ?? c.source;
+    console.log(`  ${marker}  [${label}]`);
+    console.log(`             ${c.path}`);
+  }
+
+  // Active BMAD detail
   if (ctx.detection) {
-    console.log(`BMAD home:   ${ctx.detection.path}`);
-    console.log(`Source:      ${ctx.detection.source}`);
+    console.log(`\nActive BMAD:   ${ctx.detection.path}`);
+    console.log(`Source:        ${SOURCE_LABEL[ctx.detection.source]}`);
   } else {
-    console.log(`BMAD home:   (not detected)`);
+    console.log(`\nActive BMAD:   (none — persona-only mode)`);
     if (ctx.fallbackVersion) {
-      console.log(`Fallback:    ${ctx.fallbackVersion}`);
+      console.log(`Snapshot:      ${ctx.fallbackVersion}`);
     }
+  }
+
+  // Configured shared home (even if not active)
+  if (sharedBmadHome && sharedBmadHome !== ctx.detection?.path) {
+    const live = existsSync(join(sharedBmadHome, "_config", "manifest.yaml"));
+    console.log(`Shared config: ${sharedBmadHome} ${live ? "(valid)" : "(not found)"}`);
+  }
+
+  // Default shared home (if not already shown)
+  const defaultShared = defaultSharedBmadHome();
+  const defaultShownAsCandidate = ctx.candidates.some((c) => c.path === defaultShared);
+  if (!defaultShownAsCandidate) {
+    const live = existsSync(join(defaultShared, "_config", "manifest.yaml"));
+    console.log(`Default shared: ${defaultShared} ${live ? "(valid)" : "(not found)"}`);
+  }
+
+  // Project-local signal
+  const projectCandidate = ctx.candidates.find((c) => c.source === "project");
+  if (projectCandidate?.valid && ctx.detection?.source !== "project") {
+    console.log(`\n⚠ Project-local _bmad detected but not active (shadowed by higher priority?)`);
   }
 
   // Modules

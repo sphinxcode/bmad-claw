@@ -31,12 +31,12 @@ export async function installCommand(args: string[]): Promise<void> {
 
   // Detect BMAD
   const pluginConf = readPluginConfig();
-  const bmadHome = (pluginConf["bmadHome"] as string | null) ?? null;
-  const ctx = detectBmad({ bmadHome, cwd: process.cwd() });
+  const sharedBmadHome = pluginConf.sharedBmadHome ?? null;
+  const ctx = detectBmad({ sharedBmadHome, cwd: process.cwd() });
 
   if (ctx.detection) {
     console.log(`✓ BMAD found at: ${ctx.detection.path} (${ctx.detection.source})`);
-    writePluginConfig({ bmadHome: ctx.detection.path, defaultMode: "full" });
+    writePluginConfig({ sharedBmadHome: ctx.detection.path, defaultMode: "full" });
   } else {
     const fallback = ctx.fallbackVersion ?? "bundled";
     console.log(`⚠ BMAD not detected — using fallback personas (${fallback})`);
@@ -46,8 +46,8 @@ export async function installCommand(args: string[]): Promise<void> {
   }
 
   // Read user config for identity generation
-  const userName = (pluginConf["userName"] as string | undefined) ?? "there";
-  const language = (pluginConf["language"] as string | undefined) ?? "English";
+  const userName = "there";
+  const language = "English";
   const bmadVersion = ctx.versions["_bmad"] ?? ctx.fallbackVersion ?? "unknown";
 
   // Build agent choices

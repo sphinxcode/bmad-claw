@@ -11,10 +11,10 @@ import { syncIdentity } from "../identity/syncer.js";
 
 export async function syncCommand(): Promise<void> {
   const pluginConf = readPluginConfig();
-  const storedBmadHome = (pluginConf["bmadHome"] as string | null) ?? null;
-  const boundAgents = (pluginConf["boundAgents"] as string[] | undefined) ?? [];
+  const storedBmadHome = pluginConf.sharedBmadHome ?? null;
+  const boundAgents = pluginConf.boundAgents ?? [];
 
-  // Warn if the stored bmadHome path is stale (moved/deleted)
+  // Warn if the stored shared BMAD home is stale (moved/deleted)
   const liveHome = validateStoredBmadHome();
   if (storedBmadHome && !liveHome) {
     console.warn(
@@ -22,18 +22,18 @@ export async function syncCommand(): Promise<void> {
       "  Agents will sync in persona-only mode.\n" +
       "  Fix: openclaw bmad config set-home <new-path-to-_bmad>\n",
     );
-    writePluginConfig({ bmadHome: null });
+    writePluginConfig({ sharedBmadHome: null });
   }
-  const bmadHome = liveHome;
-  const userName = (pluginConf["userName"] as string | undefined) ?? "there";
-  const language = (pluginConf["language"] as string | undefined) ?? "English";
+  const sharedBmadHome = liveHome;
+  const userName = "there";
+  const language = "English";
 
   if (boundAgents.length === 0) {
     console.log("No bound agents. Run: openclaw bmad install");
     return;
   }
 
-  const ctx = detectBmad({ bmadHome, cwd: process.cwd() });
+  const ctx = detectBmad({ sharedBmadHome, cwd: process.cwd() });
   const bmadVersion = ctx.versions["_bmad"] ?? "unknown";
 
   console.log(`\n─── BMAD Claw Sync ──────────────────────────────────────\n`);
