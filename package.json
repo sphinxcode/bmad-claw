@@ -1,5 +1,5 @@
 {
-  "name": "@sphinx/bmad-claw",
+  "name": "@sphinxcode/bmad-claw",
   "version": "0.1.0",
   "description": "Unofficial BMAD bridge for OpenClaw — bring BMAD agents to life",
   "type": "module",
