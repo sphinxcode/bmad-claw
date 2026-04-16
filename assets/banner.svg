@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="240" viewBox="0 0 900 240">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0d1117;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#161b22;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#7c3aed;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2563eb;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="textgrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#a78bfa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#60a5fa;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="240" fill="url(#bg)" rx="12" />
+
+  <!-- Top accent bar -->
+  <rect width="900" height="3" fill="url(#accent)" rx="0" />
+
+  <!-- Grid dots pattern -->
+  <g opacity="0.06">
+    <pattern id="dots" x="0" y="0" width="30" height="30" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r="1" fill="#ffffff" />
+    </pattern>
+    <rect width="900" height="240" fill="url(#dots)" />
+  </g>
+
+  <!-- Left glow orb -->
+  <circle cx="80" cy="120" r="120" fill="#7c3aed" opacity="0.08" />
+
+  <!-- Right glow orb -->
+  <circle cx="820" cy="120" r="100" fill="#2563eb" opacity="0.06" />
+
+  <!-- Claw icon group (left) -->
+  <g transform="translate(58, 68)" filter="url(#glow)">
+    <!-- Claw abstract: three curved lines suggesting a claw -->
+    <path d="M30 80 Q10 50 25 20 Q32 8 40 20 Q35 45 50 60" stroke="#a78bfa" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path d="M50 80 Q42 45 55 18 Q63 5 70 18 Q62 42 72 60" stroke="#818cf8" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path d="M70 80 Q72 48 85 22 Q93 8 98 22 Q88 46 96 65" stroke="#60a5fa" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <!-- Claw base -->
+    <path d="M20 82 Q60 100 105 82" stroke="url(#textgrad)" stroke-width="4" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- Main title -->
+  <text x="192" y="108" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', monospace" font-size="58" font-weight="800" fill="url(#textgrad)" letter-spacing="-1">bmad-claw</text>
+
+  <!-- Subtitle -->
+  <text x="194" y="143" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="18" font-weight="400" fill="#8b949e" letter-spacing="0.5">Unofficial BMAD bridge for OpenClaw</text>
+
+  <!-- Divider -->
+  <line x1="194" y1="162" x2="720" y2="162" stroke="#30363d" stroke-width="1" />
+
+  <!-- Agent pills -->
+  <g transform="translate(194, 176)">
+    <!-- Mary pill -->
+    <rect x="0" y="0" width="68" height="26" rx="13" fill="#1f2937" stroke="#374151" stroke-width="1"/>
+    <text x="34" y="17" font-family="sans-serif" font-size="12" fill="#d1d5db" text-anchor="middle">📊 Mary</text>
+
+    <!-- John pill -->
+    <rect x="76" y="0" width="68" height="26" rx="13" fill="#1f2937" stroke="#374151" stroke-width="1"/>
+    <text x="110" y="17" font-family="sans-serif" font-size="12" fill="#d1d5db" text-anchor="middle">📋 John</text>
+
+    <!-- Barry pill -->
+    <rect x="152" y="0" width="76" height="26" rx="13" fill="#1f2937" stroke="#374151" stroke-width="1"/>
+    <text x="190" y="17" font-family="sans-serif" font-size="12" fill="#d1d5db" text-anchor="middle">🏗 Barry</text>
+
+    <!-- Bob pill -->
+    <rect x="236" y="0" width="62" height="26" rx="13" fill="#1f2937" stroke="#374151" stroke-width="1"/>
+    <text x="267" y="17" font-family="sans-serif" font-size="12" fill="#d1d5db" text-anchor="middle">🧠 Bob</text>
+
+    <!-- +more pill -->
+    <rect x="306" y="0" width="70" height="26" rx="13" fill="#1c1b2e" stroke="#4c1d95" stroke-width="1"/>
+    <text x="341" y="17" font-family="sans-serif" font-size="12" fill="#a78bfa" text-anchor="middle">+ more</text>
+  </g>
+
+  <!-- Version badge (top right) -->
+  <g transform="translate(760, 20)">
+    <rect width="110" height="26" rx="6" fill="#1f2937" stroke="#374151" stroke-width="1"/>
+    <text x="8" y="17" font-family="monospace" font-size="11" fill="#6b7280">v</text>
+    <text x="18" y="17" font-family="monospace" font-size="11" fill="#a78bfa">0.1.0</text>
+    <text x="52" y="17" font-family="monospace" font-size="11" fill="#374151"> · </text>
+    <text x="64" y="17" font-family="monospace" font-size="11" fill="#60a5fa">MIT</text>
+  </g>
+
+  <!-- Bottom accent -->
+  <rect y="237" width="900" height="3" fill="url(#accent)" rx="0" />
+</svg>
