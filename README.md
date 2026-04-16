@@ -3,7 +3,7 @@
 
   <br />
 
-  ![npm version](https://img.shields.io/npm/v/@sphinx/bmad-claw?style=flat-square&color=7c3aed&label=bmad-claw)
+  ![npm version](https://img.shields.io/npm/v/@sphinxcode/bmad-claw?style=flat-square&color=7c3aed&label=bmad-claw)
   ![OpenClaw compat](https://img.shields.io/badge/OpenClaw-%3E%3D2026.3.24--beta.2-2563eb?style=flat-square)
   ![BMAD Method](https://img.shields.io/badge/BMAD--Method-compatible-10b981?style=flat-square)
   ![License](https://img.shields.io/badge/license-MIT-8b949e?style=flat-square)
@@ -38,7 +38,7 @@ Without this plugin, BMAD agents live only as one-shot Claude Code skills. With 
 | 📂 **BMAD-aware sessions** | Hook injects the module version banner when you're working inside a BMAD project directory. |
 | 🔧 **Workflow on demand** | Ask Mary for market research, John for a PRD — the `bmad_workflow` tool resolves it by code or name. |
 | 🌐 **Works without BMAD** | Agents load from a committed fallback snapshot. Full persona, no workflows until BMAD is installed. |
-| 🚀 **One-step setup** | `openclaw plugins install @sphinx/bmad-claw` → multiselect → done. |
+| 🚀 **One-step setup** | `openclaw plugins install @sphinxcode/bmad-claw` → multiselect → done. |
 | 🔄 **Drift detection** | `openclaw bmad sync` re-checks each agent against the live manifest and regenerates only what changed. |
 | 📦 **Fallback snapshot** | Bundled `agents.json` + `workflows-catalog.json` — no BMAD repo needed to install. |
 
@@ -57,7 +57,7 @@ Without this plugin, BMAD agents live only as one-shot Claude Code skills. With 
 ### 1 — Install the plugin
 
 ```sh
-openclaw plugins install @sphinx/bmad-claw
+openclaw plugins install @sphinxcode/bmad-claw
 ```
 
 The postinstall script runs `openclaw bmad install` automatically. You'll see a multiselect:
