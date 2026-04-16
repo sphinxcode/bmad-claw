@@ -1,0 +1,177 @@
+[
+  {
+    "module": "bmm",
+    "skill": "bmad-bmm-document-project",
+    "displayName": "Document Project",
+    "menuCode": "DP",
+    "description": "Analyze an existing project to produce useful documentation"
+  },
+  {
+    "module": "bmm",
+    "skill": "bmad-bmm-generate-project-context",
+    "displayName": "Generate Project Context",
+    "menuCode": "GPC",
+    "description": "Scan existing codebase to generate a lean LLM-optimized project-context.md containing critical implementation rules patterns and conventions for AI agents. Essential for brownfield projects and quick-flow."
+  },
+  {
+    "module": "bmm",
+    "skill": "bmad-bmm-quick-spec",
+    "displayName": "Quick Spec",
+    "menuCode": "QS",
+    "description": "Do not suggest for potentially very complex things unless requested or if the user complains that they do not want to follow the extensive planning of the bmad method. Quick one-off tasks small changes simple apps brownfield additions to well established patterns utilities without extensive planning"
+  },
+  {
+    "module": "bmm",
+    "skill": "bmad-bmm-quick-dev",
+    "displayName": "Quick Dev",
+    "menuCode": "QD",
+    "description": "Quick one-off tasks small changes simple apps utilities without extensive planning - Do not suggest for potentially very complex things unless requested or if the user complains that they do not want to follow the extensive planning of the bmad method, unless the user is already working through the implementation phase and just requests a 1 off things not already in the plan"
+  },
+  {
+    "module": "bmm",
+    "skill": "bmad-bmm-correct-course",
+    "displayName": "Correct Course",
+    "menuCode": "CC",
+    "description": "Anytime: Navigate significant changes. May recommend start over update PRD redo architecture sprint planning or correct epics and stories"
+  },
+  {
+    "module": "bmm",
+    "skill": "bmad-brainstorming",
+    "displayName": "Brainstorm Project",
+    "menuCode": "BP",
+    "description": "Expert Guided Facilitation through a single or multiple techniques"
+  },
+  {
+    "module": "bmm",
+    "skill": "bmad-bmm-market-research",
+    "displayName": "Market Research",
+    "menuCode": "MR",
+    "description": "Market analysis competitive landscape customer needs and trends"
+  },
+  {
+    "module": "bmm",
+    "skill": "bmad-bmm-domain-research",
+    "displayName": "Domain Research",
+    "menuCode": "DR",
+    "description": "Industry domain deep dive subject matter expertise and terminology"
+  },
+  {
+    "module": "bmm",
+    "skill": "bmad-bmm-technical-research",
+    "displayName": "Technical Research",
+    "menuCode": "TR",
+    "description": "Technical feasibility architecture options and implementation approaches"
+  },
+  {
+    "module": "bmm",
+    "skill": "bmad-bmm-create-product-brief",
+    "displayName": "Create Brief",
+    "menuCode": "CB",
+    "description": "A guided experience to nail down your product idea"
+  },
+  {
+    "module": "bmm",
+    "skill": "bmad-bmm-create-prd",
+    "displayName": "Create PRD",
+    "menuCode": "CP",
+    "description": "Expert led facilitation to produce your Product Requirements Document"
+  },
+  {
+    "module": "bmm",
+    "skill": "bmad-bmm-validate-prd",
+    "displayName": "Validate PRD",
+    "menuCode": "VP",
+    "description": "Validate PRD is comprehensive lean well organized and cohesive"
+  },
+  {
+    "module": "bmm",
+    "skill": "bmad-bmm-edit-prd",
+    "displayName": "Edit PRD",
+    "menuCode": "EP",
+    "description": "Improve and enhance an existing PRD"
+  },
+  {
+    "module": "bmm",
+    "skill": "bmad-bmm-create-ux-design",
+    "displayName": "Create UX",
+    "menuCode": "CU",
+    "description": "Guidance through realizing the plan for your UX, strongly recommended if a UI is a primary piece of the proposed project"
+  },
+  {
+    "module": "bmm",
+    "skill": "bmad-bmm-create-architecture",
+    "displayName": "Create Architecture",
+    "menuCode": "CA",
+    "description": "Guided Workflow to document technical decisions"
+  },
+  {
+    "module": "bmm",
+    "skill": "bmad-bmm-create-epics-and-stories",
+    "displayName": "Create Epics and Stories",
+    "menuCode": "CE",
+    "description": "Create the Epics and Stories Listing"
+  },
+  {
+    "module": "bmm",
+    "skill": "bmad-bmm-check-implementation-readiness",
+    "displayName": "Check Implementation Readiness",
+    "menuCode": "IR",
+    "description": "Ensure PRD UX Architecture and Epics Stories are aligned"
+  },
+  {
+    "module": "bmm",
+    "skill": "bmad-bmm-sprint-planning",
+    "displayName": "Sprint Planning",
+    "menuCode": "SP",
+    "description": "Generate sprint plan for development tasks - this kicks off the implementation phase by producing a plan the implementation agents will follow in sequence for every story in the plan."
+  },
+  {
+    "module": "bmm",
+    "skill": "bmad-bmm-sprint-status",
+    "displayName": "Sprint Status",
+    "menuCode": "SS",
+    "description": "Anytime: Summarize sprint status and route to next workflow"
+  },
+  {
+    "module": "bmm",
+    "skill": "bmad-bmm-create-story",
+    "displayName": "Validate Story",
+    "menuCode": "VS",
+    "description": "Validates story readiness and completeness before development work begins"
+  },
+  {
+    "module": "bmm",
+    "skill": "bmad-bmm-create-story",
+    "displayName": "Create Story",
+    "menuCode": "CS",
+    "description": "Story cycle start: Prepare first found story in the sprint plan that is next, or if the command is run with a specific epic and story designation with context. Once complete, then VS then DS then CR then back to DS if needed or next CS or ER"
+  },
+  {
+    "module": "bmm",
+    "skill": "bmad-bmm-dev-story",
+    "displayName": "Dev Story",
+    "menuCode": "DS",
+    "description": "Story cycle: Execute story implementation tasks and tests then CR then back to DS if fixes needed"
+  },
+  {
+    "module": "bmm",
+    "skill": "bmad-bmm-code-review",
+    "displayName": "Code Review",
+    "menuCode": "CR",
+    "description": "Story cycle: If issues back to DS if approved then next CS or ER if epic complete"
+  },
+  {
+    "module": "bmm",
+    "skill": "bmad-bmm-qa-automate",
+    "displayName": "QA Automation Test",
+    "menuCode": "QA",
+    "description": "Generate automated API and E2E tests for implemented code using the project's existing test framework (detects existing well known in use test frameworks). Use after implementation to add test coverage. NOT for code review or story validation - use CR for that."
+  },
+  {
+    "module": "bmm",
+    "skill": "bmad-bmm-retrospective",
+    "displayName": "Retrospective",
+    "menuCode": "ER",
+    "description": "Optional at epic end: Review completed work lessons learned and next epic or if major issues consider CC"
+  }
+]

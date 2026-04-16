@@ -1,0 +1,17 @@
+{
+  "version": "2026.4.14",
+  "agents": {
+    "list": []
+  },
+  "plugins": {
+    "entries": {
+      "bmad-claw": {
+        "config": {
+          "boundAgents": [],
+          "bmadHome": null,
+          "defaultMode": "full"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "id": "bmad-claw",
+  "name": "BMAD Claw",
+  "description": "Unofficial BMAD bridge for OpenClaw. Scaffolds BMAD personas (Mary, John, Barry, etc.) as global OpenClaw agents with freestyle identity, session hooks, and workflow tools. Optionally installs BMAD from scratch.",
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "bmadHome": {
+        "type": ["string", "null"],
+        "description": "Absolute path to _bmad directory. Set automatically by bmad install or bmad config set-home."
+      },
+      "boundAgents": {
+        "type": "array",
+        "items": { "type": "string" },
+        "description": "Agent IDs managed by this plugin.",
+        "default": []
+      },
+      "defaultMode": {
+        "type": "string",
+        "enum": ["full", "persona-only"],
+        "description": "full = BMAD workflows available; persona-only = personality only, no workflows.",
+        "default": "persona-only"
+      }
+    }
+  }
+}
