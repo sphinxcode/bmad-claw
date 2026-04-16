@@ -1,6 +1,6 @@
 {
   "name": "@sphinxcode/bmad-claw",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Unofficial BMAD bridge for OpenClaw — bring BMAD agents to life",
   "type": "module",
   "main": "./index.ts",
